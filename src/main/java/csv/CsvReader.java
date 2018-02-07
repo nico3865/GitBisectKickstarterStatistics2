@@ -17,7 +17,7 @@ import org.apache.commons.csv.CSVRecord;
  */
 public class CsvReader {
 	
-	private static String fileName;
+	private String fileName;
 	
 	private static final String[] FILE_HEADER_MAPPING = {
 			"ID", 
@@ -47,7 +47,7 @@ public class CsvReader {
 		fileName = fileName.replace("%20", " ");
 	}
 
-	public static List<Map<String, String>> getListOfRecordsFromCsv() 
+	public List<Map<String, String>> getListOfRecordsFromCsv() 
 	{
 
 		FileReader fileReader = null;

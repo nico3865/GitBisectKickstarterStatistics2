@@ -7,7 +7,7 @@ import java.util.HashMap;
 import csv.CsvReader;
 import stats.KickstarterStats;
 
-public class CollectKickstarterStats {
+public class PrintKickstarterStats {
 
 	public static void main(String[] args) {
 		
@@ -28,6 +28,13 @@ public class CollectKickstarterStats {
         {
         	Double avgForCategory = getAvgOfPledgesForAllCategories.get(category);
         	System.out.println("avgForCategory: "+ category + " ==> " +avgForCategory);
+        }
+        
+        HashMap<String, Double> getAvgOfPledgesForAllYears = classUnderTest.getDictOfAvgOfPledgesForAllYears();
+        for(String year : getAvgOfPledgesForAllYears.keySet())
+        {
+        	Double avgForYear = getAvgOfPledgesForAllYears.get(year);
+        	System.out.println("avgForYear: "+ year + " ==> " +avgForYear);
         }
         
         System.out.println("========================================== /KICKSTARTER STATS ==========================================");

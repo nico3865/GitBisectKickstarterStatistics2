@@ -24,7 +24,8 @@ public class CsvReader {
 	
 	private HashMap<String, List<Map<String, String>>> hashedByCategory = null;
 	private HashMap<String, List<Map<String, String>>> hashedByYear = null;
-	
+	private HashMap<String, List<Map<String, String>>> hashedByTitleLength = null;
+
 	private static final String[] FILE_HEADER_MAPPING = {
 			"ID", 
 			"name", 
@@ -108,7 +109,8 @@ public class CsvReader {
 		{
 			getListOfAllKickstarterRecordsFromCsv();
 		}
-		if(hashedByCategory != null && hashedByYear != null)
+		
+		if(hashedByCategory != null && hashedByYear != null && hashedByTitleLength != null)
 		{
 			return;
 		}
@@ -135,6 +137,16 @@ public class CsvReader {
 				hashedByYear.put(year, bucketForYear);	
 			}
 			
+			// hash by title length:
+			if(hashedByTitleLength == null){ hashedByTitleLength = new HashMap<String, List<Map<String, String>>>(); }
+			int titleLength = kickstarterProject.get("name").length();
+			int titleLengthGroup = titleLength / 5;
+			List<Map<String, String>> bucketForTitleLengthGroup = hashedByTitleLength.get(titleLengthGroup);
+			if(bucketForTitleLengthGroup == null) { bucketForTitleLengthGroup = new ArrayList<Map<String, String>>(); }
+			bucketForTitleLengthGroup.add(kickstarterProject);
+			hashedByTitleLength.put(""+titleLengthGroup, bucketForTitleLengthGroup);	
+			
+
 
 		}
 	}
@@ -173,6 +185,25 @@ public class CsvReader {
 		}
 		return hashedByYear.get(year);
 	}
+	
+	public Set<String> getPossibleTitleLengthGroups() 
+	{
+		if(hashedByTitleLength == null)
+		{
+			getSubsetsInData();
+		}
+		return hashedByTitleLength.keySet();
+	}
+	
+	public List<Map<String, String>> getKickstartersForTitleLengthGroup(String titleLength) 
+	{
+		if(hashedByTitleLength == null)
+		{
+			getSubsetsInData();
+		}
+		return hashedByTitleLength.get(titleLength);
+	}
+
 
 	
 }

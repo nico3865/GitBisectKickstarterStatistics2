@@ -1,7 +1,10 @@
 package stats;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import csv.CsvReader;
 
@@ -13,6 +16,81 @@ public class KickstarterStats {
 	{
 		this.csvReader = csvReader;
 	}
+	
+	
+	public HashMap<String, Double> getDictOfAvgOfPledgesForAllYears() 
+	{
+		Set<String> allYears = csvReader.getPossibleYears();
+		
+		HashMap<String, Double> results = new HashMap<String, Double>();
+		double yearlyPledgeAvg;
+		for(String year : allYears)
+		{
+			yearlyPledgeAvg = getAvgOfPledgesForYear(year);
+			results.put(year, yearlyPledgeAvg);
+		}
+		return results;
+	}
+	
+	public double getAvgOfPledgesForYear(String year)
+	{
+		List<Map<String, String>> listOfKickstarterProjects = csvReader.getKickstartersForYear(year);
+		
+		double total = 0d;
+		for(Map<String, String> project : listOfKickstarterProjects)
+		{
+			String pledgedAsString = project.get("pledged");
+			double pledgedAmount = 0d;
+			try {
+				pledgedAmount = Double.parseDouble(pledgedAsString);
+			} catch (NumberFormatException e) {
+				// TODO collect all records that are badly formatted (usually due to commas or quotes in title) 
+			}
+			total += pledgedAmount;
+		}
+		double avgPledged = total / listOfKickstarterProjects.size();
+				
+		return avgPledged; 
+	}
+	
+	
+	public HashMap<String, Double> getDictOfAvgOfPledgesForAllCategories() 
+	{
+		Set<String> allCategories = csvReader.getPossibleCategories();
+		
+		HashMap<String, Double> results = new HashMap<String, Double>();
+		double categoryPledgeAvg = 0d;
+		for(String category : allCategories)
+		{
+			categoryPledgeAvg = getAvgOfPledgesForCategory(category);
+			results.put(category, categoryPledgeAvg);
+		}
+		return results;
+	}
+	
+	public double getAvgOfPledgesForCategory(String category)
+	{
+		List<Map<String, String>> listOfKickstarterProjects = csvReader.getKickstartersForCategory(category);
+		
+		double total = 0d;
+		for(Map<String, String> project : listOfKickstarterProjects)
+		{
+			String pledgedAsString = project.get("pledged");
+			double pledgedAmount = 0d;
+			try {
+				pledgedAmount = Double.parseDouble(pledgedAsString);
+			} catch (NumberFormatException e) {
+				// TODO collect all records that are badly formatted (usually due to commas or quotes in title) 
+			}
+			total += pledgedAmount;
+		}
+		double avgPledged = total / listOfKickstarterProjects.size();
+				
+		return avgPledged; 
+	}
+	
+	
+
 	
 	public double getGlobalAvgOfPledges()
 	{
@@ -31,15 +109,12 @@ public class KickstarterStats {
 			total += pledgedAmount;
 		}
 		double avgPledged = total / listOfKickstarterProjects.size();
-		
-		System.out.println("GlobalAvgPledged: "+avgPledged);
-		
+				
 		return avgPledged; 
 	}
 	
 	public double getGlobalAvgOfFundingGoals()
 	{
-		// TODO: create helper avg function that takes List<Map<String, String>> as input so it can be tested more easily
 		List<Map<String, String>> listOfKickstarterProjects = csvReader.getListOfAllKickstarterRecordsFromCsv();
 		double total = 0d;
 		for(Map<String, String> project : listOfKickstarterProjects)
@@ -51,19 +126,16 @@ public class KickstarterStats {
 			} catch (NumberFormatException e) {
 				// TODO collect all records that are badly formatted (usually due to commas or quotes in title) 
 			}
-			total += goalAmount;
+			total = goalAmount;
 		}
 		double avgGoal = total / listOfKickstarterProjects.size();
-		
-		System.out.println("GlobalAvgGoal: "+avgGoal);
-		
+				
 		return avgGoal; 
 	}
 	
 	public double getPercentageThatReachedFundingGoal()
 	{
-		// TODO: create helper avg function that takes List<Map<String, String>> as input so it can be tested more easily
-		List<Map<String, String>> listOfKickstarterProjects = csvReader.getListOfAllKickstarterRecordsFromCsv();
+		List<Map<String, String>> listOfKickstarterProjects = csvReader.getKickstartersForCategory("Design");
 		
 		double numSuccesses = 0d;
 		for(Map<String, String> project : listOfKickstarterProjects)
@@ -75,12 +147,11 @@ public class KickstarterStats {
 			}
 		}
 		double percentageSucceeded = numSuccesses / listOfKickstarterProjects.size();
-		
-		System.out.println("PercentageThatReachedFundingGoal: "+percentageSucceeded);
-		
+				
 		return percentageSucceeded; 
 
 	}
+	
 	
 	
 

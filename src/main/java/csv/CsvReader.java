@@ -3,8 +3,10 @@ package csv;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -19,6 +21,8 @@ public class CsvReader {
 	
 	private String fileName;
 	private List<Map<String, String>> allEntriesFromCsv = null;
+	
+	private HashMap<String, List<Map<String, String>>> hashedByCategory = null;
 	
 	private static final String[] FILE_HEADER_MAPPING = {
 			"ID", 
@@ -62,7 +66,7 @@ public class CsvReader {
 		CSVFormat csvFileFormat = CSVFormat.DEFAULT.withHeader(FILE_HEADER_MAPPING);
 
 		try {
-			List<Map<String, String>> allEntriesFromCsv = new ArrayList<Map<String, String>>();
+			allEntriesFromCsv = new ArrayList<Map<String, String>>();
 			fileReader = new FileReader(fileName);
 			csvFileParser = new CSVParser(fileReader, csvFileFormat);
 			List<CSVRecord> csvRecords = csvFileParser.getRecords();
@@ -96,4 +100,43 @@ public class CsvReader {
 
 	}
 
+	
+	private void getSubsetsInData() 
+	{
+		if(allEntriesFromCsv == null)
+		{
+			getListOfAllKickstarterRecordsFromCsv();
+		}
+		if(hashedByCategory != null)
+		{
+			return;
+		}
+		
+		for(Map<String, String> kickstarterProject : allEntriesFromCsv)
+		{
+			// hash by category:
+			if(hashedByCategory == null){ hashedByCategory = new HashMap<String, List<Map<String, String>>>(); }
+			String category = kickstarterProject.get("main_category");
+			List<Map<String, String>> bucketForCategory = hashedByCategory.get(category);
+			if(bucketForCategory == null) { bucketForCategory = new ArrayList<Map<String, String>>(); }
+			bucketForCategory.add(kickstarterProject);
+			hashedByCategory.put(category, bucketForCategory);
+		}
+	}
+	
+	public Set<String> getPossibleCategories() 
+	{
+		if(hashedByCategory == null)
+		{
+			getSubsetsInData();
+		}
+		return hashedByCategory.keySet();
+	}
+	
+	public List<Map<String, String>> getKickstartersForCategory(String category) 
+	{
+		return hashedByCategory.get(category);
+	}
+
+	
 }

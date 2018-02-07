@@ -46,7 +46,7 @@ public class CsvReader {
 		fileName = fileName.replace("%20", " ");
 	}
 
-	public static boolean readCsvFile() 
+	public static List<CSVRecord> getListOfRecordsFromCsv() 
 	{
 
 		FileReader fileReader = null;
@@ -70,7 +70,7 @@ public class CsvReader {
 				System.out.println(entry.toMap().get("deadline"));
 			}
 			
-			return true;
+			return allEntriesFromCsv;
 			
 		} catch (Exception e) {
 			System.out.println("Error in CsvFileReader !!!");
@@ -84,7 +84,7 @@ public class CsvReader {
 				e.printStackTrace();
 			}
 		}
-		return false;
+		return null;
 
 	}
 

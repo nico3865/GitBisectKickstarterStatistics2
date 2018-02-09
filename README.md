@@ -20,8 +20,8 @@ You will use Git Bisect to find two commits that introduced two bugs in this pro
 		1) getGlobalAvgOfFundingGoals()
 		2) getPercentageThatReachedFundingGoal() 
 	- we know that those functions used to work correctly at those commits:
-		1) getGlobalAvgOfFundingGoals() --> d29668c2b20bb87c8793e0c0c0338c8314f9b6ab
-		2) getPercentageThatReachedFundingGoal() --> 56945aced56e4fa07b36dbe32a7a63f28a4a4135
+		1) getGlobalAvgOfFundingGoals() --> b68a8b274ef026cd589757629b79d9dc8a73d2c3 (ADD: avg goal function)
+		2) getPercentageThatReachedFundingGoal() --> 8413c7801fc83d66b7987265de9b040afdce116a (ADD: function for getting percentage of kickstarters that reached their funding goal)
  
 #### Here are the steps to find the bugs with Git Bisect:
 	A) Make two Mockito tests for the two buggy functions (This will allow you to isolate the calculations from the csv reader logic and thus determine where each bug comes from).
@@ -31,7 +31,7 @@ You will use Git Bisect to find two commits that introduced two bugs in this pro
 		- open a terminal in your local git repo's folder
 		- git bisect start
 		- git bisect bad // to indicate current head is bad
-		- git bisect good 56945aced56e4fa07b36dbe32a7a63f28a4a4135 to indicate last known good commit for this percentage feature. For the avg goal feature: d29668c2b20bb87c8793e0c0c0338c8314f9b6ab
+		- git bisect good b68a8b274ef026cd589757629b79d9dc8a73d2c3 // to indicate last known good commit for this avg goal feature. For the percentage feature: d29668c2b20bb87c8793e0c0c0338c8314f9b6ab
 		- then, paste your test back in the test folder --> and run it. depending on the result of the test, type git bisect bad or bisect good
 		- repeat until git finds the first bad commit.
 		// NB, use: git bisect reset // if you made a mistake and want to start over.

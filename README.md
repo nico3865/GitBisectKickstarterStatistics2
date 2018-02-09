@@ -30,7 +30,7 @@ You will use Git Bisect to find two commits that introduced two bugs in this pro
 		- open a terminal in your local git repo's folder
 		- git bisect start
 		- git bisect bad // to indicate current head is bad
-		- git bisect good b68a8b274ef026cd589757629b79d9dc8a73d2c3 // to indicate last known good commit for this avg goal feature. For the percentage feature: d29668c2b20bb87c8793e0c0c0338c8314f9b6ab
+		- git bisect good b68a8b274ef026cd589757629b79d9dc8a73d2c3 // to indicate last known good commit for this avg goal feature. For the percentage feature: 8413c7801fc83d66b7987265de9b040afdce116a
 		- then, paste your test back in the test folder --> and run it. depending on the result of the test, type git bisect bad or bisect good
 		- repeat until git finds the first bad commit.
 		// NB, use: git bisect reset // if you made a mistake and want to start over.

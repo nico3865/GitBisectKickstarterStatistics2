@@ -2,11 +2,12 @@
 
 This program compiles various statistics about Kickstarter projects.
 
-#### Clone and Setup instructions:
+#### Clone and Setup instructions: 
 	- Clone it from: https://github.com/nico3865/GitBisectKickstarterStatistics.git
+	- (IMPORTANT: due to a quirk, you must clone this repo to a folder that has no spaces in its absolute path)
 	- Import it in Eclipse as a Gradle project
 	- Run Gradle 
-	- Run the Main: CollectKickstarterStats.java
+	- Run the Main: main/PrintKickstarterStats.java
 	- Run JUnit (some very bad dummy tests are in the src/test/java folder) 
 
 You will use Git Bisect to find two commits that introduced two bugs in this program.
@@ -24,15 +25,9 @@ You will use Git Bisect to find two commits that introduced two bugs in this pro
  
 #### Here are the steps to find the bugs with Git Bisect:
 	A) Make two Mockito tests for the two buggy functions (This will allow you to isolate the calculations from the csv reader logic and thus determine where each bug comes from).
-		- import Mockito:
-			- add to build.gradle: testCompile "org.mockito:mockito-core:2.+"
-			- run gradle
-		- then test the 2 faulty functions with Mockito:
-			- mock the csv reader, and a relevant function (make it return a Map<String, String> of kickstarter entries)
-			- run your test on the bad and the good commits (d29668c2b20bb87c8793e0c0c0338c8314f9b6ab and 56945aced56e4fa07b36dbe32a7a63f28a4a4135)
-				- make sure that it fails on the bad commits and succeeds on the good commits
-			- make a copy of your two test files on your Desktop (you will need it as you checkout different commits that didn't have that test yet)
-	B) Then run Git Bisect, 
+		- I actually already made one to get you started
+		- make a similar test for the second buggy function
+	B) Then run Git Bisect: 
 		- open a terminal in your local git repo's folder
 		- git bisect start
 		- git bisect bad // to indicate current head is bad

@@ -42,11 +42,20 @@ public class CsvReader {
 			"usd pledged" 
 			};
 
+	/**
+	 * 
+	 * @param csvFilePath <-- only if you want to use a different file than the default repo one
+	 */
 	public CsvReader(String csvFilePath) 
 	{
 		fileName = csvFilePath;
 	}
 	
+	/**
+	 * 
+	 * by default will use the csv that is located next to this class, (in the same folder)
+	 * 
+	 */
 	public CsvReader() 
 	{
 		java.net.URL fileNameURL = CsvReader.class.getResource("ks-projects-201612-2.csv");
@@ -54,6 +63,10 @@ public class CsvReader {
 		fileName = fileName.replace("%20", " ");
 	}
 
+	/**
+	 * 
+	 * @return basically the csv held in memory inside a List of Maps (each row is a map, you can access a row's property with row.get("main_category"))
+	 */
 	public List<Map<String, String>> getListOfAllKickstarterRecordsFromCsv() 
 	{
 		
@@ -103,6 +116,13 @@ public class CsvReader {
 	}
 
 	
+	/**
+	 * 
+	 * creates subsets from the data (basically like indexing) 
+	 * 		- hashes the list to access records instantly by certain properties (project category, year and title length)
+	 * 		- traverses the csv-as-List "cached" in this class
+	 * 
+	 */
 	private void getSubsetsInData() 
 	{
 		if(allEntriesFromCsv == null)
@@ -151,6 +171,10 @@ public class CsvReader {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return the Set of all different category found in the csv  
+	 */
 	public Set<String> getPossibleCategories() 
 	{
 		if(hashedByCategory == null)
@@ -160,6 +184,11 @@ public class CsvReader {
 		return hashedByCategory.keySet();
 	}
 	
+	/**
+	 * 
+	 * @param category (e.g. "Design", "Food", "Technology", etc.)
+	 * @return the rows (Kickstarter projects) for that category, as List of Maps
+	 */
 	public List<Map<String, String>> getKickstartersForCategory(String category) 
 	{
 		if(hashedByCategory == null)
@@ -168,6 +197,11 @@ public class CsvReader {
 		}
 		return hashedByCategory.get(category);
 	}
+	
+	/**
+	 * 
+	 * @return the Set of all different years with Kickstarters found in the csv  
+	 */
 	public Set<String> getPossibleYears() 
 	{
 		if(hashedByYear == null)
@@ -177,6 +211,11 @@ public class CsvReader {
 		return hashedByYear.keySet();
 	}
 	
+	/**
+	 * 
+	 * @param year (e.g. "Design", "Food", "Technology", etc.)
+	 * @return the rows (Kickstarter projects) for that year, as List of Maps
+	 */
 	public List<Map<String, String>> getKickstartersForYear(String year) 
 	{
 		if(hashedByYear == null)
@@ -186,6 +225,12 @@ public class CsvReader {
 		return hashedByYear.get(year);
 	}
 	
+	/**
+	 * 
+	 * @return the Set of all different titlelengthGroups found in the csv
+	 *   	- titlelengthGroups numbers are: 1,2,3,4,5 etc.
+	 *   	- they represent the factor that, multiplied to 5, gives the title length (e.g. group 1 has less than 5 character titles, group 3 has less than 15 character titles)
+	 */
 	public Set<String> getPossibleTitleLengthGroups() 
 	{
 		if(hashedByTitleLength == null)
@@ -195,6 +240,13 @@ public class CsvReader {
 		return hashedByTitleLength.keySet();
 	}
 	
+	/**
+	 * 
+	 * @param titleLength (e.g. 1,2,3,4,5,6,7, etc.)
+	 *   	- titlelengthGroups numbers are: 1,2,3,4,5 etc.
+	 *   	- they represent the factor that, multiplied to 5, gives the title length (e.g. group 1 has less than 5 character titles, group 3 has less than 15 character titles)
+	 * @return the rows (Kickstarter projects) for that title-length-group, as List of Maps
+	 */
 	public List<Map<String, String>> getKickstartersForTitleLengthGroup(String titleLength) 
 	{
 		if(hashedByTitleLength == null)

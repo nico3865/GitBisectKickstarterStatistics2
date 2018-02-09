@@ -4,7 +4,6 @@ This program compiles various statistics about Kickstarter projects.
 
 #### Clone and Setup instructions: 
 	- Clone it from: https://github.com/nico3865/GitBisectKickstarterStatistics.git
-	- (IMPORTANT: due to a quirk, you must clone this repo to a folder that has no spaces in its absolute path)
 	- Import it in Eclipse as a Gradle project
 	- Run Gradle 
 	- Run the Main: main/PrintKickstarterStats.java
